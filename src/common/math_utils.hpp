@@ -310,6 +310,16 @@ inline U mish_fwd(T s) {
     return (U)(s * ::tanhf(v));
 }
 
+template <typename T,
+        typename U = typename utils::remove_reference<T>::type>
+inline U round_fwd(T s) {
+    float r = ::roundf((float)s);
+    float d = (float)s - r;
+
+    return ((d != 0.5f) && (d != -0.5f)) || (::fmodf(r, 2.0f) == 0.0f) ? r :
+           (float)s - d;
+}
+
 template <typename T, typename A,
          typename U = typename utils::remove_reference<T>::type>
 inline U scale_shift_fwd(T s_val, A w_val, A b_val) {
